@@ -1,11 +1,5 @@
 # **Behavioral Cloning** 
 
-## Writeup Template
-
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
 **Behavioral Cloning Project**
 
 The goals / steps of this project are the following:
@@ -29,46 +23,51 @@ The goals / steps of this project are the following:
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
 
----
 ### Files Submitted & Code Quality
 
-#### 1. Submission includes all required files and can be used to run the simulator in autonomous mode
-
-My project includes the following files:
+#### 1.) This project includes the following files:
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
-* writeup_report.md or writeup_report.pdf summarizing the results
+* README.md summarizing the results, which you are currently reading!
 
-#### 2. Submission includes functional code
-Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
+#### 2.) Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
 ```sh
 python drive.py model.h5
 ```
 
-#### 3. Submission code is usable and readable
+#### And images can be recorded by adding a desination folder as a second argument (in this case, run1)
+```sh
+python drive.py model.h5 run1
+```
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+#### 3.) The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
 ### Model Architecture and Training Strategy
 
-#### 1. An appropriate model architecture has been employed
+#### The model used in this project is taken from the publication ["End to End Learning for Self-Driving Cars"](https://arxiv.org/abs/1604.07316) written by a group of computer vision and autonomous vehicle engineers at the NVIDIA Corporation.
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+The model, written in Keras v1.2.1, using the Sequential class, consists of the following layers, as seen in model.py lines 97-132
+- Normalization, Lambda layer, lambda x: x/255 - 0.5
+- Cropping, Removing the top 70 and bottom 25 rows of pixels, Input dimensions: 320 x 160 x 3, Output dimensions: 320 x 65 x 3
+- Convolutional Layer, 5 x 5 filter, 2 x 2 stride, 24 output layers, ReLU activation, 
+- Convolutional Layer, 5 x 5 filter, 2 x 2 stride, 36 output layers, ReLU activation
+- Convolutional Layer, 5 x 5 filter, 2 x 2 stride, 48 output layers, ReLU activation
+- Convolutional Layer, 3 x 3 filter, 1 x 1 stride, 64 output layers, ReLU activation
+- Convolutional Layer, 3 x 3 filter, 1 x 1 stride, 64 output layers, ReLU activation
+- Flatten the values of the final Convolutional Layer
+- Fully connected layer, 100 Neurons
+- Fully connected layer,  50 Neurons
+- Fully connected layer,  10 Neurons
+- Fully connected layer,   1 Neuron
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
 
-#### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+As in the traffic-sign classification project (found [here](https://github.com/esouliot/CarND-Traffic-Sign-Classifier-Project)), the [Adam Optimizer](https://arxiv.org/abs/1412.6980) was used for stochastic gradient descent, with mean-squared error being used as the loss function (since the output values are continuous in this task).
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+It should be noted that the model.py module has included code for the use of the left and right camera recordings, but was ultimately not needed, as the network was successfully trained on center recordings alone. 
 
-#### 3. Model parameter tuning
-
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
-
-#### 4. Appropriate training data
+#### 4. Collection of training data
 
 Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
 
