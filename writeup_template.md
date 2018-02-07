@@ -1,15 +1,4 @@
 # **Behavioral Cloning** 
-
-**Behavioral Cloning Project**
-
-The goals / steps of this project are the following:
-* Use the simulator to collect data of good driving behavior
-* Build, a convolution neural network in Keras that predicts steering angles from images
-* Train and validate the model with a training and validation set
-* Test that the model successfully drives around track one without leaving the road
-* Summarize the results with a written report
-
-
 [//]: # (Image References)
 
 [image1]: ./examples/placeholder.png "Model Visualization"
@@ -19,9 +8,6 @@ The goals / steps of this project are the following:
 [image5]: ./examples/placeholder_small.png "Recovery Image"
 [image6]: ./examples/placeholder_small.png "Normal Image"
 [image7]: ./examples/placeholder_small.png "Flipped Image"
-
-## Rubric Points
-### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
 
 ### Files Submitted & Code Quality
 
@@ -61,17 +47,30 @@ The model, written in Keras v1.2.1, using the Sequential class, consists of the 
 - Fully connected layer,  10 Neurons
 - Fully connected layer,   1 Neuron
 
-
-
 As in the traffic-sign classification project (found [here](https://github.com/esouliot/CarND-Traffic-Sign-Classifier-Project)), the [Adam Optimizer](https://arxiv.org/abs/1412.6980) was used for stochastic gradient descent, with mean-squared error being used as the loss function (since the output values are continuous in this task).
 
-It should be noted that the model.py module has included code for the use of the left and right camera recordings, but was ultimately not needed, as the network was successfully trained on center recordings alone. 
 
-#### 4. Collection of training data
+#### Collection of training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+The data collection for this project can be broken down into three phases
 
-For details about how I created the training data, see the next section. 
+1.) Collecting normal lap driving, staying in the center of the road
+
+- The car was driven for two laps going in the counter-clockwise "forward" direction (as the car faces when starting), and another two laps going in the clockwise "reverse" direction (doing a u-turn at the start and going the "wrong way"). This is to help generalize the network, and to avoid overfitting, since the forward direction consists mostly of left turns.
+
+- In the lap runs, care was taken to remain as close as possible to the center of the track, and to corner as smoothly as possible. Since the drive.py module controls for throttle (~9mph), certain sharp corners were performed at less-than max throttle (<30mph).
+
+2.) Collecting recovery driving, to teach the network what to do when the car veers off center
+
+- As in the lap runs, recoveries were recorded going in both clockwise and counter-clockwise directions, to help generalize the model to recover from the left and the right sides of the road. 
+
+- To train the model, I drove the car onto a given side of the road, where the car would be stepping on a boundary marker (either a yellow lane line, a red and white apex, a black bridge wall, or a dirt border with no markings)
+
+- When the car found itself on one of these four boundaries, I would turn on the recording, perform a recovery to the center of the lane, and turn off the recording. This was done all around the track where the car might find itself veering off the road if it doesn't turn properly
+
+3.) Collecting supplementary data on one particularly troublesome corner after the stone bridge
+
+
 
 ### Model Architecture and Training Strategy
 
