@@ -1,13 +1,14 @@
 # **Behavioral Cloning** 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[image1]: ./examples/apex_left.jpg "left apex"
+[image2]: ./examples/apex_right.jpg "right apex"
+[image3]: ./examples/bridge_left.jpg "left bridge"
+[image4]: ./examples/bridge_right.jpg "right bridge"
+[image5]: ./examples/dirt_left.jpg "left dirt"
+[image6]: ./examples/dirt_right.jpg "right dirt"
+[image7]: ./examples/yellow_left.jpg "left yellow"
+[image8]: ./examples/yellow_right.jpg "right yellow"
 
 ### Files Submitted & Code Quality
 
@@ -58,17 +59,31 @@ The data collection for this project can be broken down into three phases
 
 - The car was driven for two laps going in the counter-clockwise "forward" direction (as the car faces when starting), and another two laps going in the clockwise "reverse" direction (doing a u-turn at the start and going the "wrong way"). This is to help generalize the network, and to avoid overfitting, since the forward direction consists mostly of left turns.
 
-- In the lap runs, care was taken to remain as close as possible to the center of the track, and to corner as smoothly as possible. Since the drive.py module controls for throttle (~9mph), certain sharp corners were performed at less-than max throttle (<30mph).
+- In the lap runs, care was taken to remain as close as possible to the center of the track, and to corner as smoothly as possible. Since the drive.py module controls for throttle (~9mph), certain sharp corners were performed at less-than max throttle (<30mph) to ensure consistent steering angles through the corners.
 
 2.) Collecting recovery driving, to teach the network what to do when the car veers off center
 
 - As in the lap runs, recoveries were recorded going in both clockwise and counter-clockwise directions, to help generalize the model to recover from the left and the right sides of the road. 
 
-- To train the model, I drove the car onto a given side of the road, where the car would be stepping on a boundary marker (either a yellow lane line, a red and white apex, a black bridge wall, or a dirt border with no markings)
+- To train the model, I drove the car onto a given side of the road, where the car would be stepping on a boundary marker (either a yellow lane line, a red and white apex, a black bridge wall)
 
-- When the car found itself on one of these four boundaries, I would turn on the recording, perform a recovery to the center of the lane, and turn off the recording. This was done all around the track where the car might find itself veering off the road if it doesn't turn properly
+[Left apex][image1]
+
+[Right apex][image2]
+
+[Left bridge][image3]
+
+[Right bridge][image4]
+
+[Left yellow][image7]
+
+[Right yellow][image8]
+
+- When the car found itself on one of these boundaries, I would turn on the recording, perform a recovery to the center of the lane, and turn off the recording. This was done all around the track where the car might find itself veering off the road if it doesn't turn properly
 
 3.) Collecting supplementary data on one particularly troublesome corner after the stone bridge
+
+- As you may have noticed, I did not make mention of the fourth type of lane boundary, the dirt border with no marking. This boundary type proved to be of particular difficulty for the autonomous drive. In test runs prior to the model being finalized, the car would either veer into the 
 
 
 
