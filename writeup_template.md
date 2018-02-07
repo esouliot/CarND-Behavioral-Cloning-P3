@@ -9,6 +9,17 @@
 [image6]: ./examples/dirt_right.jpg "right dirt"
 [image7]: ./examples/yellow_left.jpg "left yellow"
 [image8]: ./examples/yellow_right.jpg "right yellow"
+[image9]: ./examples/posts_right.jpg "posts right"
+
+[image10]: ./examples/apex_left.gif
+[image11]: ./examples/apex_right.gif
+[image12]: ./examples/bridge_left.gif
+[image13]: ./examples/bridge_right.gif
+[image14]: ./examples/dirt_left.gif
+[image15]: ./examples/dirt_right.gif
+[image16]: ./examples/dirt_right_corner.gif
+[image17]: ./examples/yellow_left.gif
+[image18]: ./examples/yellow_right.gif
 
 ### Files Submitted & Code Quality
 
@@ -67,25 +78,30 @@ The data collection for this project can be broken down into three phases
 
 - To train the model, I drove the car onto a given side of the road, where the car would be stepping on a boundary marker (either a yellow lane line, a red and white apex, a black bridge wall)
 
-[Left apex][image1]
+![Left apex][image1] ![Right apex][image2] 
 
-[Right apex][image2]
+![Left bridge][image3] ![Right bridge][image4] 
 
-[Left bridge][image3]
-
-[Right bridge][image4]
-
-[Left yellow][image7]
-
-[Right yellow][image8]
+![Left yellow][image7] ![Right yellow][image8]
 
 - When the car found itself on one of these boundaries, I would turn on the recording, perform a recovery to the center of the lane, and turn off the recording. This was done all around the track where the car might find itself veering off the road if it doesn't turn properly
 
+![Left apex gif][image10] ![Right apex gif][image11]
+
+![Left bridge gif][image12] ![Right bridge gif][image13]
+
+![Left yellow gif][image17] ![Right yellow gif][image18]
+
+
 3.) Collecting supplementary data on one particularly troublesome corner after the stone bridge
 
-- As you may have noticed, I did not make mention of the fourth type of lane boundary, the dirt border with no marking. This boundary type proved to be of particular difficulty for the autonomous drive. In test runs prior to the model being finalized, the car would either veer into the 
+- As you may have noticed, I did not make mention of the fourth type of lane boundary, the dirt border with no marking. This boundary type proved to be of particular difficulty, so it gets its own section. In test runs prior to the model being finalized, the car simply would not stay on the course. It would veer into the poles on the right-hand side, run off the road and over the curb coming off of the bridge, or it would make it all the way to the corner, and then take the initiative to go off-roading (not good!)
 
+- So, to remedy these unwanted moves, I collected extra data both in cornering as normal, and in path correction.
 
+![Dirt corner][image16] ![Dirt right][image15]
+
+- And in the end, the extra data paid off, with the car taking that corner with ease.
 
 ### Model Architecture and Training Strategy
 
