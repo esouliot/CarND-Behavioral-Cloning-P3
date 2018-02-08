@@ -113,4 +113,4 @@ The data collection for this project can be broken down into three phases
 
 - It should also be noted that, while I included code in model.py to include data from the left and right cameras, it was ultimately not needed, as the code gave a model capable of driving the car around the track successfully using only the center images and angles.
 
-- And as shown in run1.mp4, the car completes a little more than a lap without going outside the track. The closest the car reached to doing so was in the right hairpin turn after the dirt corner. But, even then, the car managed to stay close to the apex, not veeriny off the road. 
+- And as shown in run1.mp4, the car completes a little more than a lap without going outside the track. The closest the car reached to doing so was in the right hairpin turn after the dirt corner. But, even then, the car managed to stay close to the apex, not veering off the road. 
