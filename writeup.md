@@ -107,7 +107,7 @@ The data collection for this project can be broken down into three phases
 
 - Since the image locations and their respective steering values were recorded automatically by the simulator, in CSV form, we could easily import those values with the data processing library of our choosing (in my case, Pandas). As can be seen in model.py, lines 22-24, some text preprocessing on the path names was necessary before training the images on the Amazon Web Services (AWS) instance, since the data was recorded on a machine running Windows 7, but the AWS Udacity environment uses Linux. 
 
-- After the text preprocessing, the aptly named classes train_test_split and shuffle were imported from Scikit-learn in order to shuffle the data and perform a training/testing split (or, training/validation split to be more precise).
+- After the text preprocessing, the aptly named train_test_split and shuffle classes were imported from Scikit-learn in order to shuffle and perform a training/testing split on the data (or, shuffling and training/validation split to be more precise).
 
 - Next, because the AWS instance does not have enough memory to hold thousands of images in one array, we instead use batching. The Keras Sequential class has a method fit_generator to train on data in batches, and it requires a generator method to feed the data. So, from lines 44 to 91, we define a generator function to load data in batches of 32 images. In reality, it turned out to be 64 images per batch, since I augmented the data by flipping the images and feeding in the negative of the steering angle. Nevertheless, these batches of 64 were processed using an NVIDIA GPU on the AWS instance over three epochs, giving a final validation loss <0.01
 
