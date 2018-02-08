@@ -141,28 +141,4 @@ model.fit_generator(train_generator,
                     validation_data=validation_generator,
                     nb_val_samples=len(validation_samples), 
                     nb_epoch=3)
-
-#Checkpoints were tested for a second run. 
-"""
-checkpoint = ModelCheckpoint(filepath = 'checks0.h5', verbose = 1, save_best_only = True)
-model.fit_generator(train_generator, 
-                    samples_per_epoch=2*len(train_samples), 
-                    validation_data=validation_generator,
-                    nb_val_samples=len(validation_samples), 
-                    nb_epoch=5,
-                    callbacks = [checkpoint])
-"""
-
-#An attempt to overfit the model
-#High number of epochs
-"""
-checkpoint = ModelCheckpoint(filepath = 'checks1.h5', verbose = 1, save_best_only = True)
-model.fit_generator(train_generator, 
-                    samples_per_epoch=2*len(train_samples), 
-                    validation_data=validation_generator,
-                    nb_val_samples=len(validation_samples), 
-                    nb_epoch=20,
-                    callbacks = [checkpoint])
-"""
-
 model.save('model0.h5')
