@@ -79,7 +79,7 @@ The model, written in Keras v1.2.1, using the Sequential class, consists of the 
 As in the traffic-sign classification project (found [here](https://github.com/esouliot/CarND-Traffic-Sign-Classifier-Project)), the [Adam Optimizer](https://arxiv.org/abs/1412.6980) was used for stochastic gradient descent, with mean-squared error being used as the loss function (since the output values are continuous in this task).
 
 
-#### Remarks on the NVIDIA model versus other convolutional neural networks
+#### Remarks on the NVIDIA Model versus Other Convolutional Neural Networks
 
 - On a cursory level, it may seem unnecessary to implement a model such as the NVIDIA model used for this task, as opposed to a model such as LeNet or [AlexNet](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf), but considering the context in which these networks were designed, it seems to be the best fit to use the NVIDIA model.
 
@@ -87,7 +87,7 @@ As in the traffic-sign classification project (found [here](https://github.com/e
 
 - As mentioned in the abstract of the team's article, the NVIDIA network was designed with the purpose of deriving a steering measurement implicitly from road markings with minimal training input. And although this task is only run on a simulator, and not a real vehicle such as in the study, the model is highly compatible for this project, as it successfully predicted steering angles implicitly, using boundary markings.
 
-#### Collection of training data
+#### Collection of Training Data
 
 The data collection for this project can be broken down into three phases
 
@@ -135,14 +135,11 @@ The data collection for this project can be broken down into three phases
 
 - After the text preprocessing, the aptly named train_test_split and shuffle classes were imported from Scikit-learn in order to shuffle and perform a training/testing split on the data (or, shuffling and training/validation split to be more precise).
 
-- Next, because the AWS instance does not have enough memory to hold thousands of images in one array, we instead use batching. The Keras Sequential class has a method fit_generator to train on data in batches, and it requires a generator method to feed the data. So, from lines 44 to 91, we define a generator function to load data in batches of 32 images. In reality, it turned out to be 64 images per batch, since I augmented the data by flipping the images and feeding in the negative of the steering angle. Nevertheless, these batches of 64 were processed using an NVIDIA GPU on the AWS instance over three epochs, giving a final validation loss <0.01
+- Next, because the AWS instance does not have enough memory to hold thousands of images in one array, we instead use batching. The Keras Sequential class has a method fit_generator to train on data in batches, and it requires a generator method to feed the data. So, from lines 44 to 91, we define a generator function to load data in batches of 32 images. In reality, it turned out to be 64 images per batch, since I augmented the data by flipping the images and feeding in the negative of the steering angle. Nevertheless, these batches of 64 were processed using an NVIDIA GPU on the AWS instance over three epochs, giving a final validation loss < 0.1
 
 - It should also be noted that, while I included code in model.py to include data from the left and right cameras, it was ultimately not needed, as the code gave a model capable of driving the car around the track successfully using only the center images and angles.
 
-- And as shown in run1.mp4, the car completes a little more than a lap without going outside the track. The closest the car reached to doing so was in the right hairpin turn after the dirt corner. But, even then, the car managed to stay close to the apex, not veering off the road. 
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
-
-#### Different model settings and remarks on overfitting
+#### Different Model Settings and Remarks on Overfitting
 
  As can be seen in the project repository, there are three versions of the network, intended to show various stages of overfitting and overtraining. But, as can be seen in all three run videos, if any over or underfitting occurs, it is not severe enough that the car cannot complete the lap run.
  
@@ -154,7 +151,7 @@ A well written README file can enhance your project and portfolio.  Develop your
 
 - With these three models in mind, the argument can be made that for the purposes of this project (completing autonomous lap runs around the first track), any evidence of overfitting is inconsequential, given that data was collected properly (i.e., data was collected to teach the car what to do for any given scenario on track one). So, even without steps to minimize overfitting, such as including dropout layers, the model did not show any adverse signs of overfitting to the training data. Though, for the purposes of generalizing to a different road setup, such as in track 2, the model did not generalize well. As discussed below.
 
-#### Blind runs on the second track
+#### Blind Runs on the Second Track
 
 - To test the adaptability of this model, three runs were recorded on the jungle track (track 2) using the model trained on track 1. As might be expected, the car does not drive nearly as well on this track, as its asphalt is of a different texture, does not have yellow boundaries or red/white apexes, and has a dashed middle lane line. As such, the learning from the first track does not transfer as well. 
 
