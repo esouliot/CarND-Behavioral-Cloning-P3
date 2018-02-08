@@ -111,4 +111,6 @@ The data collection for this project can be broken down into three phases
 
 - Next, because the AWS instance does not have enough memory to hold thousands of images in one array, we instead use batching. The Keras Sequential class has a method fit_generator to train on data in batches, and it requires a generator method to feed the data. So, from lines 44 to 91, we define a generator function to load data in batches of 32 images. In reality, it turned out to be 64 images per batch, since I augmented the data by flipping the images and feeding in the negative of the steering angle. Nevertheless, these batches of 64 were processed using an NVIDIA GPU on the AWS instance over three epochs, giving a final validation loss <0.01
 
+- It should also be noted that, while I included code in model.py to include data from the left and right cameras, it was ultimately not needed, as the code gave a model capable of driving the car around the track successfully using only the center images and angles.
+
 - And as shown in run1.mp4, the car completes a little more than a lap without going outside the track. The closest the car reached to doing so was in the right hairpin turn after the dirt corner. But, even then, the car managed to stay close to the apex, not veeriny off the road. 
