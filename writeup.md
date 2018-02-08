@@ -29,7 +29,7 @@
 * model.h5 containing a trained convolution neural network 
 * README.md summarizing the results, which you are currently reading!
 
-#### 2.) Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
+#### 2.) Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing the following code in the Miniconda 3 command line 
 ```sh
 python drive.py model.h5
 ```
