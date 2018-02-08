@@ -85,7 +85,7 @@ As in the traffic-sign classification project (found [here](https://github.com/e
 
 - LeNet and AlexNet, though potentially "lighter-weight", were not necessarily designed with autonomous driving in mind. LeNet was originally designed for the task of classifying hand-written numerals, and AlexNet for object classification. The NVIDIA model, on the other hand, was designed for a real-world driving application not unlike the lap driving of this project. 
 
-- As mentioned in the abstract of the team's article, the NVIDIA network was designed with the purpose of deriving a steering measurement implicitly from road markings with minimal training input. And although this task is only run on a simulator, and not a real vehicle such as in the study, the model is highly compatible for this project, as it successfully predicted steering angles implicitly using boundary markings implicitly.
+- As mentioned in the abstract of the team's article, the NVIDIA network was designed with the purpose of deriving a steering measurement implicitly from road markings with minimal training input. And although this task is only run on a simulator, and not a real vehicle such as in the study, the model is highly compatible for this project, as it successfully predicted steering angles implicitly, using boundary markings.
 
 #### Collection of training data
 
