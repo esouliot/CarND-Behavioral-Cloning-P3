@@ -135,7 +135,6 @@ model.add(Dense(50))
 model.add(Dense(10))
 model.add(Dense(1))
 
-
 #An attempt to overfit the model
 #High number of epochs
 #Weights saved in model2.h5
