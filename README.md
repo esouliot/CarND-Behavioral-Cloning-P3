@@ -1,8 +1,7 @@
-# Behaviorial Cloning Project
+# **Behavioral Cloning** 
 
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
-# **Behavioral Cloning** 
 [//]: # (Image References)
 
 [image1]: ./examples/apex_left.jpg "left apex"
@@ -28,19 +27,32 @@
 ### Files Submitted & Code Quality
 
 #### 1.) This project includes the following files:
-* model.py containing the script to create and train the model
+* model0.py containing the script to create and train the model for run 0 
+* model1.py containing the script to create and train the model for run 1
+* model2.py containing the script to create and train the model for run 2
 * drive.py for driving the car in autonomous mode
-* model.h5 containing a trained convolution neural network 
-* writeup.md summarizing the results, which you are currently reading!
+* model0.h5 containing a trained convolution neural network for run 0
+* model0.h5 containing a trained convolution neural network for run 1
+* model0.h5 containing a trained convolution neural network for run 2
 
-#### 2.) Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing the following code in the Miniconda 3 command line 
+* README.md summarizing the results, which you are currently reading!
+
+#### 2.) Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing the any of the following 3 commands in the Miniconda 3 command line
 ```sh
-python drive.py model.h5
+python drive.py model0.h5
 ```
 
-#### And images can be recorded by adding a desination folder as a second argument (in this case, run1)
 ```sh
-python drive.py model.h5 run1
+python drive.py model1.h5
+```
+
+```sh
+python drive.py model2.h5
+```
+
+#### And images can be recorded by adding a desination folder as a second argument
+```sh
+python drive.py model0.h5 run0
 ```
 
 #### 3.) The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
@@ -50,6 +62,7 @@ python drive.py model.h5 run1
 #### The model used in this project is taken from the publication ["End to End Learning for Self-Driving Cars"](https://arxiv.org/abs/1604.07316) written by a group of computer vision and autonomous vehicle engineers at the NVIDIA Corporation.
 
 The model, written in Keras v1.2.1, using the Sequential class, consists of the following layers, as seen in model.py lines 97-132
+
 - Normalization, Lambda layer, lambda x: x/255 - 0.5
 - Cropping, Removing the top 70 and bottom 25 rows of pixels, Input dimensions: 320 x 160 x 3, Output dimensions: 320 x 65 x 3
 - Convolutional Layer, 5 x 5 filter, 2 x 2 stride, 24 output layers, ReLU activation, 
@@ -64,6 +77,15 @@ The model, written in Keras v1.2.1, using the Sequential class, consists of the 
 - Fully connected layer,   1 Neuron, Output its value
 
 As in the traffic-sign classification project (found [here](https://github.com/esouliot/CarND-Traffic-Sign-Classifier-Project)), the [Adam Optimizer](https://arxiv.org/abs/1412.6980) was used for stochastic gradient descent, with mean-squared error being used as the loss function (since the output values are continuous in this task).
+
+
+#### Remarks on the NVIDIA model versus other convolutional neural networks
+
+- On a cursory level, it may seem unnecessary to implement a model such as the NVIDIA model used for this task, as opposed to a model such as LeNet or [AlexNet](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf), but considering the context in which these networks were designed, it seems to be the best fit to use the NVIDIA model.
+
+- LeNet and AlexNet, though potentially "lighter-weight", were not necessarily designed with autonomous driving in mind. LeNet was originally designed for the task of classifying hand-written numerals, and AlexNet for object classification. The NVIDIA model, on the other hand, was designed for a real-world driving application not unlike the lap driving of this project. 
+
+- As mentioned in the abstract of the team's article, the NVIDIA network was designed with the purpose of deriving a steering measurement implicitly from road markings with minimal training input. And although this task is only run on a simulator, and not a real vehicle such as in the study, the model is highly compatible for this project, as it successfully predicted steering angles implicitly using boundary markings implicitly.
 
 #### Collection of training data
 
@@ -120,3 +142,20 @@ The data collection for this project can be broken down into three phases
 - And as shown in run1.mp4, the car completes a little more than a lap without going outside the track. The closest the car reached to doing so was in the right hairpin turn after the dirt corner. But, even then, the car managed to stay close to the apex, not veering off the road. 
 A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
 
+#### Different model settings and remarks on overfitting
+
+ As can be seen in the project repository, there are three versions of the network, intended to show various stages of overfitting and overtraining. But, as can be seen in all three run videos, if any over or underfitting occurs, it is not severe enough that the car cannot complete the lap run.
+ 
+- Model 0 trains for three epochs, and saves the model parameters from the third epoch to the model0.h5 file. It can be argued that run 0 shows some slight underfitting, with the car swerving very slightly in the straightaways.
+
+- Model 1 trains for five epochs, saving the epoch with the lowest validation loss to the model1.h5 file. This run shows a slight amount of pulling to the left in segments bounded by the yellow lane lines, but those moves are corrected before the car can veer off the road.
+
+- Model 2 trains for 20 epochs, saving the lowest validation error model to the model2.h5 file. As expected, this model produced the lowest training and validation error (loss: 0.0050 - val_loss: 0.0095), but it didn't seem to be indicative of overfitting to the training, and even if it did, the training data largely consisted of smooth lap driving with consistent steering angles through corners. 
+
+- With these three models in mind, the argument can be made that for the purposes of this project (completing autonomous lap runs around the first track), any evidence of overfitting is inconsequential, given that data was collected properly (i.e., data was collected to teach the car what to do for any given scenario on track one). So, even without steps to minimize overfitting, such as including dropout layers, the model did not show any adverse signs of overfitting to the training data. Though, for the purposes of generalizing to a different road setup, such as in track 2, the model did not generalize well. As discussed below.
+
+#### Blind runs on the second track
+
+- To test the adaptability of this model, three runs were recorded on the jungle track (track 2) using the model trained on track 1. As might be expected, the car does not drive nearly as well on this track, as its asphalt is of a different texture, does not have yellow boundaries or red/white apexes, and has a dashed middle lane line. As such, the learning from the first track does not transfer as well. 
+
+- It should be noted, however, that the "overfitted" model 2 managed to drive somewhat well through a portion of the track before running off of the road. And this is with zero training data recorded from this track. It is likely safe to assume that with sufficient training data from track 2, the model should be able to navigate it successfully. 
