@@ -57,10 +57,9 @@ The model, written in Keras v1.2.1, using the Sequential class, consists of the 
 - Fully connected layer, 100 Neurons
 - Fully connected layer,  50 Neurons
 - Fully connected layer,  10 Neurons
-- Fully connected layer,   1 Neuron
+- Fully connected layer,   1 Neuron, Output its value
 
 As in the traffic-sign classification project (found [here](https://github.com/esouliot/CarND-Traffic-Sign-Classifier-Project)), the [Adam Optimizer](https://arxiv.org/abs/1412.6980) was used for stochastic gradient descent, with mean-squared error being used as the loss function (since the output values are continuous in this task).
-
 
 #### Collection of training data
 
@@ -92,10 +91,11 @@ The data collection for this project can be broken down into three phases
 
 ![Left yellow gif][image17] ![Right yellow gif][image18]
 
-
 3.) Collecting supplementary data on one particularly troublesome corner after the stone bridge
 
 - As you may have noticed, I did not make mention of the fourth type of lane boundary, the dirt border with no marking. This boundary type proved to be of particular difficulty, so it gets its own section. In test runs prior to the model being finalized, the car simply would not stay on the course. It would veer into the poles on the right-hand side, run off the road and over the curb coming off of the bridge, or it would make it all the way to the corner, and then take the initiative to go off-roading (not good!)
+
+![Left dirt][image5] ![Right dirt][image6]
 
 - So, to remedy these unwanted moves, I collected extra data both in cornering as normal, and in path correction.
 
@@ -103,56 +103,12 @@ The data collection for this project can be broken down into three phases
 
 - And in the end, the extra data paid off, with the car taking that corner with ease.
 
-### Model Architecture and Training Strategy
+#### Creation of the Training Set & Training Process
 
-#### 1. Solution Design Approach
+- Since the image locations and their respective steering values were recorded automatically by the simulator, in CSV form, we could easily import those values with the data processing library of our choosing (in my case, Pandas). As can be seen in model.py, lines 22-24, some text preprocessing on the path names was necessary before training the images on the Amazon Web Services (AWS) instance, since the data was recorded on a machine running Windows 7, but the AWS Udacity environment uses Linux. 
 
-The overall strategy for deriving a model architecture was to ...
+- After the text preprocessing, the aptly named classes train_test_split and shuffle were imported from Scikit-learn in order to shuffle the data and perform a training/testing split (or, training/validation split to be more precise).
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+- Next, because the AWS instance does not have enough memory to hold thousands of images in one array, we instead use batching. The Keras Sequential class has a method fit_generator to train on data in batches, and it requires a generator method to feed the data. So, from lines 44 to 91, we define a generator function to load data in batches of 32 images. In reality, it turned out to be 64 images per batch, since I augmented the data by flipping the images and feeding in the negative of the steering angle. Nevertheless, these batches of 64 were processed using an NVIDIA GPU on the AWS instance over three epochs, giving a final validation loss <0.01
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
-
-To combat the overfitting, I modified the model so that ...
-
-Then I ... 
-
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
-
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
-
-#### 2. Final Model Architecture
-
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
-
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
-
-![alt text][image1]
-
-#### 3. Creation of the Training Set & Training Process
-
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
-
-![alt text][image2]
-
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
-
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
-
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
-
-
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
-
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+- And as shown in run1.mp4, the car completes a little more than a lap without going outside the track. The closest the car reached to doing so was in the right hairpin turn after the dirt corner. But, even then, the car managed to stay close to the apex, not veeriny off the road. 
